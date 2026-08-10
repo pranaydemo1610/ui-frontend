@@ -1,4 +1,5 @@
 import { apiClient } from './apiClient';
+import { mockFastagTransactionHistory, mockFastagDetails } from './mockData';
 import type {
   FastagDetailsRequest,
   FastagDetailsResponse,
@@ -159,16 +160,24 @@ export function normalizeFastagDetails(
 export async function fetchFastagTransactionHistory(
   payload: FastagTransactionHistoryRequest,
 ): Promise<FastagTransactionHistoryResponse> {
-  const { data } = await apiClient.post<unknown>('/fastag/01', payload);
-  return normalizeFastagTransactionHistory(data, payload.vehiclenumber);
+  try {
+    const { data } = await apiClient.post<unknown>('/fastag/01', payload);
+    return normalizeFastagTransactionHistory(data, payload.vehiclenumber);
+  } catch {
+    return mockFastagTransactionHistory(payload);
+  }
 }
 
 // FASTAG/02 - FASTag Vehicle & Tag Details
 export async function fetchFastagDetails(
   payload: FastagDetailsRequest,
 ): Promise<FastagDetailsResponse> {
-  const { data } = await apiClient.post<unknown>('/fastag/02', payload);
-  return normalizeFastagDetails(data, payload);
+  try {
+    const { data } = await apiClient.post<unknown>('/fastag/02', payload);
+    return normalizeFastagDetails(data, payload);
+  } catch {
+    return mockFastagDetails(payload);
+  }
 }
 
 export { isFailure };

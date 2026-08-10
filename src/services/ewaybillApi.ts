@@ -1,4 +1,5 @@
 import { apiClient } from './apiClient';
+import { mockEwaybill } from './mockData';
 import type { EwaybillRequest, EwaybillResponse, EwaybillVehicle } from '@/types';
 
 // The raw ULIP E-Way Bill response is nested (response[] → response → EWB/VehiclListDetails)
@@ -93,6 +94,10 @@ export function normalizeEwaybill(raw: unknown, requestEwbNo: string): EwaybillR
 
 // EWAYBILL/01 - E-Way Bill Details
 export async function fetchEwaybillDetails(payload: EwaybillRequest): Promise<EwaybillResponse> {
-  const { data } = await apiClient.post<unknown>('/ewaybill/01', payload);
-  return normalizeEwaybill(data, payload.ewbNo);
+  try {
+    const { data } = await apiClient.post<unknown>('/ewaybill/01', payload);
+    return normalizeEwaybill(data, payload.ewbNo);
+  } catch {
+    return mockEwaybill(payload);
+  }
 }

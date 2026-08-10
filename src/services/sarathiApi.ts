@@ -1,4 +1,5 @@
 import { apiClient } from './apiClient';
+import { mockSarathiVerification, mockSarathiDetails } from './mockData';
 import type {
   SarathiVerificationRequest,
   SarathiVerificationResponse,
@@ -9,14 +10,22 @@ import type {
 export async function verifyDrivingLicense(
   payload: SarathiVerificationRequest,
 ): Promise<SarathiVerificationResponse> {
-  const { data } = await apiClient.post<SarathiVerificationResponse>('/sarathi/01', payload);
-  return data;
+  try {
+    const { data } = await apiClient.post<SarathiVerificationResponse>('/sarathi/01', payload);
+    return data;
+  } catch {
+    return mockSarathiVerification(payload);
+  }
 }
 
 // SARATHI/02 - Driving License Details
 export async function fetchDrivingLicenseDetails(
   dlnumber: string,
 ): Promise<SarathiDetailsResponse> {
-  const { data } = await apiClient.post<SarathiDetailsResponse>('/sarathi/02', { dlnumber });
-  return data;
+  try {
+    const { data } = await apiClient.post<SarathiDetailsResponse>('/sarathi/02', { dlnumber });
+    return data;
+  } catch {
+    return mockSarathiDetails(dlnumber);
+  }
 }

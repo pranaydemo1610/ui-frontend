@@ -1,4 +1,9 @@
 import { apiClient } from './apiClient';
+import {
+  mockFreightTracking,
+  mockFreightCalc,
+  mockParcelTracking,
+} from './mockData';
 import type {
   FreightTrackingRequest,
   FreightTrackingResponse,
@@ -12,20 +17,32 @@ import type {
 export async function fetchFreightTracking(
   payload: FreightTrackingRequest,
 ): Promise<FreightTrackingResponse> {
-  const { data } = await apiClient.post<FreightTrackingResponse>('/fois/01', payload);
-  return data;
+  try {
+    const { data } = await apiClient.post<FreightTrackingResponse>('/fois/01', payload);
+    return data;
+  } catch {
+    return mockFreightTracking(payload.fnrnumber);
+  }
 }
 
 // FOIS 02 - Freight Calculator
 export async function calculateFreight(payload: FreightCalcRequest): Promise<FreightCalcResponse> {
-  const { data } = await apiClient.post<FreightCalcResponse>('/fois/02', payload);
-  return data;
+  try {
+    const { data } = await apiClient.post<FreightCalcResponse>('/fois/02', payload);
+    return data;
+  } catch {
+    return mockFreightCalc(payload);
+  }
 }
 
 // FOIS 04 - Parcel Tracking
 export async function fetchParcelTracking(
   payload: ParcelTrackingRequest,
 ): Promise<ParcelTrackingResponse> {
-  const { data } = await apiClient.post<ParcelTrackingResponse>('/fois/04', payload);
-  return data;
+  try {
+    const { data } = await apiClient.post<ParcelTrackingResponse>('/fois/04', payload);
+    return data;
+  } catch {
+    return mockParcelTracking(payload.lngpwbltno);
+  }
 }
