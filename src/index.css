@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg: 255 255 255;
+    --color-surface: 248 250 252;
+    --color-border: 226 232 240;
+    --color-text: 15 23 42;
+    --color-text-muted: 100 116 139;
+  }
+
+  .dark {
+    --color-bg: 2 6 23;
+    --color-surface: 15 23 42;
+    --color-border: 30 41 59;
+    --color-text: 241 245 249;
+    --color-text-muted: 148 163 184;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans antialiased;
+    background-color: rgb(var(--color-bg));
+    color: rgb(var(--color-text));
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--color-border)) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--color-border));
+    border-radius: 9999px;
+  }
+}
+
+@layer components {
+  .surface {
+    background-color: rgb(var(--color-surface));
+  }
+
+  .card {
+    @apply rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-card;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-card-hover hover:-translate-y-0.5;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-primary-700 active:scale-[0.98] disabled:opacity-60 disabled:pointer-events-none;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-300 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800;
+  }
+
+  .input-field {
+    @apply w-full rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-4 py-2.5 text-sm text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 transition-all duration-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none;
+  }
+
+  .skeleton {
+    @apply relative overflow-hidden bg-neutral-200 dark:bg-neutral-800 rounded-md;
+  }
+
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .nav-link {
+    @apply relative px-3 py-2 text-sm font-medium text-neutral-600 dark:text-neutral-300 rounded-lg transition-colors hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-950/40;
+  }
+
+  .nav-link-active {
+    @apply text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-950/40;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .ripple {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: scale(0);
+    animation: rippleAnim 0.6s ease-out;
+    pointer-events: none;
+  }
+
+  @keyframes rippleAnim {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+}
+
+/* Leaflet dark mode tweaks */
+.leaflet-container {
+  font-family: 'Inter', sans-serif !important;
+  border-radius: 16px;
+  z-index: 0;
+}
+
+.dark .leaflet-tile {
+  filter: brightness(0.7) invert(1) contrast(0.9) hue-rotate(180deg) saturate(0.6);
+}
+
+.dark .leaflet-container {
+  background: #0f172a;
+}
